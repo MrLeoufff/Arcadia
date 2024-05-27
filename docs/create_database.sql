@@ -130,3 +130,9 @@ INSERT INTO Habitat (nom, description, image_princ, id_zoo) VALUES
 ('Savane', 'Habitat pour les animaux de la savane', 'savane.jpg', 1),
 ('Jungle', 'Habitat pour les animaux de la jungle', 'jungle.jpg', 1),
 ('Marais', 'Habitat pour les animaux des marais', 'marais.jpg', 1);
+
+INSERT INTO Animal (prenom, race, image_princ, id_habitat) VALUES
+('Blue', 'Vélociraptor', 'velociraptor.jpg', 2),
+('Wivine', 'Spinosaurus', 'spinosaurus.jpg', 1),
+('Explo', 'Oryctodromeus', 'oryctodromeus.jpg', 1),
+('Killa', 'Sarcosuchus', 'Sarcosuchus.jpg')
