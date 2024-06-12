@@ -2,31 +2,39 @@
 
 
 {% block body %}
-	<style>
-		.example-wrapper {
-			margin: 1em auto;
-			max-width: 800px;
-			width: 95%;
-			font: 18px / 1.5 sans-serif;
-		}
-		.example-wrapper code {
-			background: #F5F5F5;
-			padding: 2px 6px;
-		}
-	</style>
-
-	<div class="example-wrapper">
-		<h1>Hello
-			{{ controller_name }}! ✅</h1>
-
-		This friendly message is coming from:
-		<ul>
-			<li>Your controller at
-				<code>C:/wamp64/www/Arcadia/src/Controller/HomeController.php</code>
-			</li>
-			<li>Your template at
-				<code>C:/wamp64/www/Arcadia/templates/home/index.html.twig</code>
-			</li>
-		</ul>
+	<div id="carouselDino" class="carousel slide" data-bs-ride="carousel">
+		<div class="carousel-indicators">
+			<button type="button" data-bs-target="#carouselDino" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+			<button type="button" data-bs-target="#carouselDino" data-bs-slide-to="1" aria-label="Slide 2"></button>
+			<button type="button" data-bs-target="#carouselDino" data-bs-slide-to="2" aria-label="Slide 3"></button>
+		</div>
+		<div class="carousel-inner">
+			<div class="carousel-item active">
+				<img src="{{ asset ("images/dinos/diplodocus.jpg") }}" class="d-block w-100" alt="diplodocus">
+			</div>
+			<div class="carousel-item">
+				<img src="{{ asset ("images/dinos/sarcosuchus.jpg") }}" class="d-block w-100" alt="sarcosuchus">
+			</div>
+			<div class="carousel-item">
+				<img src="{{ asset ("images/dinos/velociraptor.jpg") }}" class="d-block w-100" alt="velociraptor">
+			</div>
+		</div>
 	</div>
+	<div class="presentation">
+		<p>Arcadia est un zoo situé en France près de la forêt de Brocéliande, en bretagne depuis 1960. Ils possèdent tout un panel d’animaux, réparti par habitat (savane, jungle, marais) et font extrêmement attention à leurs santés. Chaque jour, plusieurs vétérinaires viennent afin d’effectuer les contrôles sur chaque animal avant l’ouverture du zoo afin de s’assurer que tout se passe bien, de même, toute la nourriture donnée est calculée afin d’avoir le bon grammage (le bon grammage est précisé dans le rapport du vétérinaire). Le zoo, se porte très bien financièrement, les animaux sont heureux. Cela fait la fierté de son directeur, José, qui a de grandes ambitions.
+		</p>
+	</div>
+	<div class="service">
+		<h2>
+			<a href="">Services</a>
+		</h2>
+		<p>
+			<ul>
+				<li>Restauration</li>
+				<li>Visite des habitats</li>
+				<li>Petit train</li>
+			</ul>
+		</p>
+	</div>
+
 {% endblock %}
