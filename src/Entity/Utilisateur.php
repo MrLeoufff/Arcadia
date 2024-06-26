@@ -4,16 +4,20 @@ namespace App\Entity;
 
 use App\Repository\UtilisateurRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: UtilisateurRepository::class)]
-#[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_USERNAME', fields: ['username'])]
+#[ORM\Table(name: 'utilisateur')]
+#[UniqueEntity(fields: ['email'], message: "Il existe déjà un compte avec cette email")]
 class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['info_utilisateur', 'info_animal'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 180)]
@@ -37,11 +41,16 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 50, nullable: true)]
     private ?string $prenom = null;
 
-    #[ORM\Column(length: 150)]
+    #[ORM\Column(length: 150, unique: true)]
+    #[Groups(['info_utilisateur', 'info_animal'])]
     private ?string $email = null;
 
     #[ORM\Column(length: 15)]
-    private ?array $role = null;
+    #[Groups(['utilisateur_info'])]
+    private ?array $role = [];
+
+    #[ORM\Column]
+    private int $id_zoo;
 
     public function getId(): ?int
     {
@@ -171,6 +180,26 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
     public function setRole(array $role): static
     {
         $this->role = $role;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of id_zoo
+     */
+    public function getId_zoo()
+    {
+        return $this->id_zoo;
+    }
+
+    /**
+     * Set the value of id_zoo
+     *
+     * @return  self
+     */
+    public function setId_zoo($id_zoo)
+    {
+        $this->id_zoo = $id_zoo;
 
         return $this;
     }

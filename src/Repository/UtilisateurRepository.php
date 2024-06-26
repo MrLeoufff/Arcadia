@@ -22,15 +22,24 @@ class UtilisateurRepository extends ServiceEntityRepository implements PasswordU
     /**
      * Used to upgrade (rehash) the user's password automatically over time.
      */
-    public function upgradePassword(PasswordAuthenticatedUserInterface $user, string $newHashedPassword): void
+    public function upgradePassword(PasswordAuthenticatedUserInterface $utilisateur, string $newHashedPassword): void
     {
-        if (!$user instanceof Utilisateur) {
-            throw new UnsupportedUserException(sprintf('Instances of "%s" are not supported.', $user::class));
+        if (!$utilisateur instanceof Utilisateur) {
+            throw new UnsupportedUserException(sprintf('Instances of "%s" are not supported.', $utilisateur::class));
         }
 
-        $user->setPassword($newHashedPassword);
-        $this->getEntityManager()->persist($user);
+        $utilisateur->setPassword($newHashedPassword);
+        $this->getEntityManager()->persist($utilisateur);
         $this->getEntityManager()->flush();
+    }
+
+    public function findNonAdmins(): array
+    {
+        return $this->createQueryBuilder('u')
+            ->andWhere('u.roles NOT LIKE :role')
+            ->setParameter('role', '%ROLE_ADMIN%')
+            ->getQuery()
+            ->getResult();
     }
 
     //    /**
