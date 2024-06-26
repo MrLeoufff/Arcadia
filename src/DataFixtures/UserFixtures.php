@@ -31,6 +31,7 @@ class UserFixtures extends Fixture
                 $UD['password'],
                 $UD['role'],
                 $UD['nom'],
+                1,
             );
             $user->setPassword($this->passwordHasher->hashPassword($user, $UD['password']));
             $manager->persist($user);

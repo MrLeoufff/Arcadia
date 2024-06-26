@@ -69,13 +69,14 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function __construct(string $username, string $email, string $password, array $role, string $nom)
+    public function __construct(string $username, string $email, string $password, array $role, string $nom, int $id_zoo)
     {
         $this->username = $username;
         $this->email = $email;
         $this->password = $password;
         $this->role = $role;
         $this->nom = $nom;
+        $this->id_zoo = $id_zoo;
     }
 
     /**
