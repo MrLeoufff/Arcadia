@@ -23,6 +23,9 @@ class Commentaire
     #[ORM\Column(nullable: true)]
     private ?bool $estValide = null;
 
+    #[ORM\ManyToOne(targetEntity: Zoo::class)]
+    private ?Zoo $zoo = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -60,6 +63,26 @@ class Commentaire
     public function setEstValide(?bool $estValide): static
     {
         $this->estValide = $estValide;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of zoo
+     */
+    public function getZoo()
+    {
+        return $this->zoo;
+    }
+
+    /**
+     * Set the value of zoo
+     *
+     * @return  self
+     */
+    public function setZoo($zoo)
+    {
+        $this->zoo = $zoo;
 
         return $this;
     }

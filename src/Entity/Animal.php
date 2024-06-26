@@ -22,6 +22,10 @@ class Animal
     #[ORM\Column(length: 100)]
     private ?string $image_princ = null;
 
+    #[ORM\ManyToOne(targetEntity: Habitat::class)]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Habitat $habitat = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -59,6 +63,26 @@ class Animal
     public function setImagePrinc(string $image_princ): static
     {
         $this->image_princ = $image_princ;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of habitat
+     */
+    public function getHabitat()
+    {
+        return $this->habitat;
+    }
+
+    /**
+     * Set the value of habitat
+     *
+     * @return  self
+     */
+    public function setHabitat($habitat)
+    {
+        $this->habitat = $habitat;
 
         return $this;
     }
