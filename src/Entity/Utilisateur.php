@@ -7,7 +7,6 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: UtilisateurRepository::class)]
 #[ORM\Table(name: 'utilisateur')]
@@ -16,67 +15,40 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column]
-    #[Groups(['info_utilisateur', 'info_animal'])]
+    #[ORM\Column(type: "integer")]
     private ?int $id = null;
 
-    #[ORM\Column(length: 180)]
-    private ?string $username = null;
-
-    /**
-     * @var list<string> The user roles
-     */
-    #[ORM\Column]
-    private array $roles = [];
-
-    /**
-     * @var string The hashed password
-     */
-    #[ORM\Column]
-    private ?string $password = null;
-
-    #[ORM\Column(length: 50)]
+    #[ORM\Column(type: "string", length: 50)]
     private ?string $nom = null;
 
-    #[ORM\Column(length: 50, nullable: true)]
+    #[ORM\Column(type: "string", length: 50, nullable: true)]
     private ?string $prenom = null;
 
-    #[ORM\Column(length: 150, unique: true)]
-    #[Groups(['info_utilisateur', 'info_animal'])]
+    #[ORM\Column(type: "string", length: 150)]
     private ?string $email = null;
 
-    #[ORM\Column(length: 15)]
-    #[Groups(['utilisateur_info'])]
-    private ?array $role = [];
+    #[ORM\Column(type: "json")]
+    private array $roles = [];
 
-    #[ORM\Column]
-    private int $id_zoo;
+    #[ORM\Column(type: "string", length: 50)]
+    private ?string $password = null;
+
+    #[ORM\ManyToOne(targetEntity: Zoo::class)]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Zoo $zoo = null;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getUsername(): ?string
+    public function __construct(string $email, string $password, array $roles, string $nom, Zoo $zoo)
     {
-        return $this->username;
-    }
-
-    public function setUsername(string $username): static
-    {
-        $this->username = $username;
-
-        return $this;
-    }
-
-    public function __construct(string $username, string $email, string $password, array $role, string $nom, int $id_zoo)
-    {
-        $this->username = $username;
         $this->email = $email;
         $this->password = $password;
-        $this->role = $role;
+        $this->roles = $roles;
         $this->nom = $nom;
-        $this->id_zoo = $id_zoo;
+        $this->zoo = $zoo;
     }
 
     /**
@@ -87,30 +59,6 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
     public function getUserIdentifier(): string
     {
         return (string) $this->email;
-    }
-
-    /**
-     * @see UserInterface
-     *
-     * @return list<string>
-     */
-    public function getRoles(): array
-    {
-        $roles = $this->roles;
-        // guarantee every user at least has ROLE_USER
-        $roles[] = 'ROLE_USER';
-
-        return array_unique($roles);
-    }
-
-    /**
-     * @param list<string> $roles
-     */
-    public function setRoles(array $roles): static
-    {
-        $this->roles = $roles;
-
-        return $this;
     }
 
     /**
@@ -133,7 +81,7 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function eraseCredentials(): void
     {
-        // If you store any temporary, sensitive data on the user, clear it here
+        // Si vous stockez des données sensibles temporaires sur l'utilisateur, effacez-les ici
         // $this->plainPassword = null;
     }
 
@@ -173,34 +121,30 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getRole(): ?array
+    public function getRoles(): array
     {
-        return $this->role;
+        $roles = $this->roles;
+        // garantir que chaque utilisateur a au moins le rôle ROLE_USER
+        $roles[] = 'ROLE_USER';
+
+        return array_unique($roles);
     }
 
-    public function setRole(array $role): static
+    public function setRoles(array $roles): static
     {
-        $this->role = $role;
+        $this->roles = $roles;
 
         return $this;
     }
 
-    /**
-     * Get the value of id_zoo
-     */
-    public function getId_zoo()
+    public function getZoo(): ?Zoo
     {
-        return $this->id_zoo;
+        return $this->zoo;
     }
 
-    /**
-     * Set the value of id_zoo
-     *
-     * @return  self
-     */
-    public function setId_zoo($id_zoo)
+    public function setZoo(Zoo $zoo): static
     {
-        $this->id_zoo = $id_zoo;
+        $this->zoo = $zoo;
 
         return $this;
     }

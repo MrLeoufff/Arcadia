@@ -3,6 +3,7 @@
 namespace App\DataFixtures;
 
 use App\Entity\Utilisateur;
+use App\Entity\Zoo;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
@@ -18,20 +19,25 @@ class UserFixtures extends Fixture
 
     public function load(ObjectManager $manager): void
     {
+        // Création d'un objet Zoo pour les utilisateurs
+        $zoo = new Zoo();
+        $zoo->setNom('Zoo Arcadia');
+        $manager->persist($zoo);
+        $manager->flush();
+
         $userData = [
-            ['username' => 'admin', 'email' => 'jose.hammond@gmail.com', 'password' => 'azerty', 'role' => ['ROLE_ADMIN'], 'nom' => 'hammond'],
-            ['username' => 'veto', 'email' => 'veterinaire.grant@gmail.com', 'password' => 'azerty', 'role' => ['ROLE_VETO'], 'nom' => 'grant'],
-            ['username' => 'employe', 'email' => 'employe@gmail.com', 'password' => 'azerty', 'role' => ['ROLE_EMPLOYE'], 'nom' => 'nedry'],
+            ['email' => 'jose.hammond@gmail.com', 'password' => 'azerty', 'role' => ['ROLE_ADMIN'], 'nom' => 'hammond'],
+            ['email' => 'veterinaire.grant@gmail.com', 'password' => 'azerty', 'role' => ['ROLE_VETO'], 'nom' => 'grant'],
+            ['email' => 'employe@gmail.com', 'password' => 'azerty', 'role' => ['ROLE_EMPLOYE'], 'nom' => 'nedry'],
         ];
 
         foreach ($userData as $UD) {
             $user = new Utilisateur(
-                $UD['username'],
                 $UD['email'],
                 $UD['password'],
                 $UD['role'],
                 $UD['nom'],
-                1,
+                $zoo
             );
             $user->setPassword($this->passwordHasher->hashPassword($user, $UD['password']));
             $manager->persist($user);
