@@ -17,11 +17,15 @@ class Horaire
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $jour = null;
 
-    #[ORM\Column(type: Types::TIME_MUTABLE)]
+    #[ORM\Column(type : Types::TIME_MUTABLE)]
     private ?\DateTimeInterface $heure_ouverture = null;
 
-    #[ORM\Column(type: Types::TIME_MUTABLE)]
+    #[ORM\Column(type : Types::TIME_MUTABLE)]
     private ?\DateTimeInterface $heure_fermeture = null;
+
+    #[ORM\ManyToOne(targetEntity : Zoo::class)]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Zoo $zoo = null;
 
     public function getId(): ?int
     {
@@ -60,6 +64,26 @@ class Horaire
     public function setHeureFermeture(\DateTimeInterface $heure_fermeture): static
     {
         $this->heure_fermeture = $heure_fermeture;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of zoo
+     */
+    public function getZoo()
+    {
+        return $this->zoo;
+    }
+
+    /**
+     * Set the value of zoo
+     *
+     * @return  self
+     */
+    public function setZoo($zoo)
+    {
+        $this->zoo = $zoo;
 
         return $this;
     }

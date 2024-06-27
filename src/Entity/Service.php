@@ -23,6 +23,10 @@ class Service
     #[ORM\Column(length: 100)]
     private ?string $image_service = null;
 
+    #[ORM\ManyToOne(targetEntity: Zoo::class)]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Zoo $zoo = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -60,6 +64,26 @@ class Service
     public function setImageService(string $image_service): static
     {
         $this->image_service = $image_service;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of zoo
+     */
+    public function getZoo()
+    {
+        return $this->zoo;
+    }
+
+    /**
+     * Set the value of zoo
+     *
+     * @return  self
+     */
+    public function setZoo($zoo)
+    {
+        $this->zoo = $zoo;
 
         return $this;
     }
